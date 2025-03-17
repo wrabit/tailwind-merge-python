@@ -22,7 +22,7 @@ classifiers = [
 ]
 keywords = [ "python", "tailwind", "css", "merge"]
 exclude = []
-packages = [{include = "tailwind_merge", from = "src"}]
+packages = [{include = "tailwind_merge"}]
 
 [tool.black]
 line-length = 100
