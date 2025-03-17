@@ -24,7 +24,7 @@ result = merger.merge(
 print(result)  # Output: "p-4 text-red-500 w-8"
 
 # Add custom conflict patterns
-merger.add_conflict_pattern('custom', r'^custom-')
+merger.add_rule('custom', r'^custom-')
 ```
 
 ## Features

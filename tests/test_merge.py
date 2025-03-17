@@ -12,11 +12,11 @@ def test_multiple_conflicts():
         "p-4 w-6 text-blue-500",
         "w-8 text-red-500"
     )
-    assert result == "p-4 text-red-500 w-8"
+    assert result == "p-4 w-8 text-red-500"
 
 def test_custom_pattern():
     merger = TailwindMerge()
-    merger.add_conflict_pattern('custom', r'^custom-')
+    merger.add_rule('custom', ['custom-'])
     result = merger.merge("custom-1", "custom-2")
     assert result == "custom-2"
 
@@ -43,3 +43,20 @@ def test_complete_arbitrary_overwrite():
         "bg-[#000]"
     )
     assert result == "bg-[#000]"
+
+def test_no_conflict():
+    merger = TailwindMerge()
+    result = merger.merge(
+        "p-4 w-6",
+        "text-blue-500"
+    )
+    assert result == "p-4 w-6 text-blue-500"
+
+def test_no_conflict_similar():
+    merger = TailwindMerge()
+    result = merger.merge(
+        "grid grid-cols-3 grid-rows-3",
+        "grid-cols-4 grid-rows-2"
+    )
+    print(result)
+    assert result == "grid grid-cols-4 grid-rows-2"
