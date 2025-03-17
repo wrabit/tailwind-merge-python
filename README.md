@@ -1,6 +1,6 @@
 # Tailwind Merge Python
 
-A Python implementation of the popular [tailwind-merge](https://github.com/gehrisandro/tailwind-merge-php) package. This utility helps you merge Tailwind CSS classes while handling conflicts appropriately.
+A Python implementation of the popular [tailwind-merge](https://github.com/dcastil/tailwind-merge) js package. This utility helps you merge Tailwind CSS classes while handling conflicts appropriately.
 
 ## Installation
 
