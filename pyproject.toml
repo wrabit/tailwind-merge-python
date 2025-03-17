@@ -1,0 +1,42 @@
+[build-system]
+requires = [ "poetry-core==1.8.3",]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "tailwind-merge"
+version = "0.1.0"
+description = "Merge Tailwind CSS classes without conflicts in python."
+authors = [ "Will Abbott <willabb83@gmail.com>",]
+license = "MIT"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+keywords = [ "python", "tailwind", "css", "merge"]
+exclude = []
+packages = [{include = "tailwind_merge", from = "src"}]
+
+[tool.black]
+line-length = 100
+exclude = "/(\n    \\.git\n  | \\.mypy_cache\n  | \\\\.tox\n  | \\\\.venv\n  | _build\n  | buck-out\n  | build\n  | dist\n  | venv\n)/\n"
+
+[tool.isort]
+profile = "black"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0.0"
+
+[tool.poetry.urls]
+"Homepage" = "https://github.com/wrabit/python-tailwind-merge"
+"Bug Tracker" = "https://github.com/wrabit/python-tailwind-merge/issues"
