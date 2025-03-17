@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "tailwind-merge"
-version = "0.1.0"
+version = "0.1.1"
 description = "Merge Tailwind CSS classes without conflicts in python."
 authors = [ "Will Abbott <willabb83@gmail.com>",]
 license = "MIT"
@@ -38,5 +38,5 @@ python = "^3.8"
 pytest = "^7.0.0"
 
 [tool.poetry.urls]
-"Homepage" = "https://github.com/wrabit/python-tailwind-merge"
-"Bug Tracker" = "https://github.com/wrabit/python-tailwind-merge/issues"
+"Homepage" = "https://github.com/wrabit/tailwind-merge-python"
+"Bug Tracker" = "https://github.com/wrabit/tailwind-merge-python/issues"
