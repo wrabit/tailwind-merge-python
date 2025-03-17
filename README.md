@@ -21,10 +21,10 @@ result = merger.merge(
     "p-4 w-6 text-blue-500",
     "w-8 text-red-500" 
 )
-print(result)  # Output: "p-4 text-red-500 w-8"
+print(result)  # Output: "p-4 w-8 text-red-500"
 
 # Add custom conflict patterns
-merger.add_rule('custom', r'^custom-')
+merger.add_rule('custom', ['custom-'])
 ```
 
 ## Features
@@ -37,14 +37,9 @@ merger.add_rule('custom', r'^custom-')
 
 ## Roadmap
 
-- Support for custom utility classes
 - Introduce class validation to ensure we only merge valid Tailwind classes
 - Check support for Tailwind CSS v4
 
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
