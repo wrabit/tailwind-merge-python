@@ -30,8 +30,14 @@ jobs:
           git commit -m "Automatic version bump" --allow-empty
           git push origin main
 
-      - name: Build and publish to PyPI
-        uses: JRubics/poetry-publish@v1.17
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
         with:
-          pypi_token: ${{ secrets.PYPI_TOKEN }}
-          poetry_version: "1.8.3"
+          version: 1.8.3
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Build and publish to PyPI
+        run: |
+          poetry build
+          poetry publish --username __token__ --password ${{ secrets.PYPI_TOKEN }}
