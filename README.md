@@ -19,7 +19,7 @@ merger = TailwindMerge()
 # Basic usage
 result = merger.merge(
     "p-4 w-6 text-blue-500",
-    "w-8 text-red-500"  # w-8 and text-red-500 will override w-6 and text-blue-500
+    "w-8 text-red-500" 
 )
 print(result)  # Output: "p-4 text-red-500 w-8"
 
