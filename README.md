@@ -6,7 +6,7 @@ A Python implementation of the popular [tailwind-merge](https://github.com/gehri
 
 Using pip:
 ```bash
-pip install tailwind-merge-python
+pip install tailwind-merge
 ```
 
 ## Usage
