@@ -58,5 +58,4 @@ def test_no_conflict_similar():
         "grid grid-cols-3 grid-rows-3",
         "grid-cols-4 grid-rows-2"
     )
-    print(result)
     assert result == "grid grid-cols-4 grid-rows-2"
