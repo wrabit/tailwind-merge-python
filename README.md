@@ -14,25 +14,24 @@ pip install tailwind-merge
 ```python
 from tailwind_merge import TailwindMerge
 
-merger = TailwindMerge()
+twmerge = TailwindMerge()
 
 # Basic usage
-result = merger.merge(
+result = twmerge.merge(
     "p-4 w-6 text-blue-500",
     "w-8 text-red-500" 
 )
 print(result)  # Output: "p-4 w-8 text-red-500"
 
 # Add custom conflict patterns
-merger.add_rule('custom', ['custom-'])
+twmerge.add_rule('custom', ['custom-'])
 ```
 
 ## Features
 
 - Handles conflicting Tailwind utility classes
-- Category-based merging
 - Later classes override earlier ones within the same category
-- Extensible with custom conflict patterns
+- Extensible with custom class groups
 - Zero dependencies
 
 ## Roadmap
