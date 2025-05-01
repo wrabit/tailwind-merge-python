@@ -65,13 +65,36 @@ class TailwindMerge:
             # Max Height
             ('max_height', ['max-h-']),
 
-            # Margin
-            ('margin', ['m-', 'mt-', 'mr-', 'mb-', 'ml-', 'mx-', 'my-']),
-            # Negative Margin (separate group because it could coexist with positive)
-            ('negative_margin', ['-m-', '-mt-', '-mr-', '-mb-', '-ml-', '-mx-', '-my-']),
+            # --- Margin --- (Split like padding for similar reasons)
+            ('margin_top', ['mt-']),
+            ('margin_right', ['mr-']),
+            ('margin_bottom', ['mb-']),
+            ('margin_left', ['ml-']),
+            ('margin_x', ['mx-']),
+            ('margin_y', ['my-']),
+            ('margin_all', ['m-']),
+            # Negative Margin (keep separate, maybe split further if needed)
+            ('negative_margin_top', ['-mt-']),
+            ('negative_margin_right', ['-mr-']),
+            ('negative_margin_bottom', ['-mb-']),
+            ('negative_margin_left', ['-ml-']),
+            ('negative_margin_x', ['-mx-']),
+            ('negative_margin_y', ['-my-']),
+            ('negative_margin_all', ['-m-']),
+            # --- End Margin ---
 
-            # Padding
-            ('padding', ['p-', 'pt-', 'pr-', 'pb-', 'pl-', 'px-', 'py-']),
+            # --- Padding ---
+            # Order matters: More specific (sides) before less specific (axes/all)
+            ('padding_top', ['pt-']),
+            ('padding_right', ['pr-']),
+            ('padding_bottom', ['pb-']),
+            ('padding_left', ['pl-']),
+            # Axes conflict with respective sides and the 'all' padding
+            ('padding_x', ['px-']), # Conflicts with pl-, pr-, p-
+            ('padding_y', ['py-']), # Conflicts with pt-, pb-, p-
+            # General padding conflicts with all other padding types
+            ('padding_all', ['p-']),
+            # --- End Padding ---
 
             # Display
             ('display', [
@@ -80,12 +103,17 @@ class TailwindMerge:
                 'inline-grid', 'hidden', 'contents', 'table',
                 'inline-table', 'table-caption', 'table-cell',
                 'table-column', 'table-column-group', 'table-footer-group',
-                'table-header-group', 'table-row-group', 'table-row'
+                'table-header-group', 'table-row-group', 'table-row',
+                'flow-root',
+                'list-item'
             ]),
 
             # Position
             ('position', ['static', 'fixed', 'absolute', 'relative', 'sticky']),
-            # Top, Right, Bottom, Left
+            # Top, Right, Bottom, Left, Inset
+            ('inset_all', ['inset-']),
+            ('inset_x', ['inset-x-']),
+            ('inset_y', ['inset-y-']),
             ('top', ['top-']),
             ('right', ['right-']),
             ('bottom', ['bottom-']),
@@ -99,79 +127,93 @@ class TailwindMerge:
             # Flex Wrap
             ('flex_wrap', ['flex-wrap', 'flex-wrap-reverse', 'flex-nowrap']),
             # Flex Grow
-            ('flex_grow', ['flex-grow', 'flex-grow-0']),
+            ('flex_grow', ['flex-grow', 'grow', 'grow-0']), # Added 'grow' alias
             # Flex Shrink
-            ('flex_shrink', ['flex-shrink', 'flex-shrink-0']),
+            ('flex_shrink', ['flex-shrink', 'shrink', 'shrink-0']), # Added 'shrink' alias
             # Flex
-            ('flex', ['flex-']),
+            ('flex', ['flex-1', 'flex-auto', 'flex-initial', 'flex-none']), # flex- is ambiguous now with direction etc. use specifics
             # Flex Basis
             ('flex_basis', ['basis-']),
+            # Order
+            ('order', ['order-']),
 
             # Grid Template Columns
             ('grid_template_cols', ['grid-cols-']),
-            # Grid Column Start / End
+            # Grid Column Start / End / Span
             ('grid_col_start', ['col-start-']),
             ('grid_col_end', ['col-end-']),
-            ('grid_col_span', ['col-span-']),
+            ('grid_col_span', ['col-span-']), # Should conflict start/end conceptually, but often used together. Separate group ok.
+            ('grid_col_auto', ['col-auto']), # Specific col span
             # Grid Template Rows
             ('grid_template_rows', ['grid-rows-']),
-            # Grid Row Start / End
+            # Grid Row Start / End / Span
             ('grid_row_start', ['row-start-']),
             ('grid_row_end', ['row-end-']),
-            ('grid_row_span', ['row-span-']),
-            # Grid Auto Flow
-            ('grid_auto_flow', ['grid-flow-row', 'grid-flow-col', 'grid-flow-row-dense', 'grid-flow-col-dense']),
+            ('grid_row_span', ['row-span-']), # See col-span note
+            ('grid_row_auto', ['row-auto']), # Specific row span
+             # Grid Auto Flow
+            ('grid_auto_flow', ['grid-flow-row', 'grid-flow-col', 'grid-flow-dense', 'grid-flow-row-dense', 'grid-flow-col-dense']), # Added 'dense' combinations
             # Grid Auto Columns
             ('grid_auto_cols', ['auto-cols-']),
             # Grid Auto Rows
             ('grid_auto_rows', ['auto-rows-']),
-            # Gap
-            ('gap', ['gap-']),
+            # Gap (Split like padding)
+            ('gap_all', ['gap-']),
             ('gap_x', ['gap-x-']),
             ('gap_y', ['gap-y-']),
 
             # Justify Content
-            ('justify_content', ['justify-']),
+            ('justify_content', ['justify-start', 'justify-end', 'justify-center', 'justify-between', 'justify-around', 'justify-evenly']),
             # Justify Items
-            ('justify_items', ['justify-items-']),
+            ('justify_items', ['justify-items-start', 'justify-items-end', 'justify-items-center', 'justify-items-stretch']),
             # Justify Self
-            ('justify_self', ['justify-self-']),
+            ('justify_self', ['justify-self-auto', 'justify-self-start', 'justify-self-end', 'justify-self-center', 'justify-self-stretch']),
             # Align Content
-            ('align_content', ['content-']),
+            ('align_content', ['content-center', 'content-start', 'content-end', 'content-between', 'content-around', 'content-evenly', 'content-baseline']), # Added baseline
             # Align Items
-            ('align_items', ['items-']),
+            ('align_items', ['items-start', 'items-end', 'items-center', 'items-baseline', 'items-stretch']),
             # Align Self
-            ('align_self', ['self-']),
+            ('align_self', ['self-auto', 'self-start', 'self-end', 'self-center', 'self-stretch', 'self-baseline']), # Added baseline
 
-            # Border Width
-            ('border_width', ['border', 'border-0', 'border-2', 'border-4', 'border-8']),
-            ('border_width_t', ['border-t-']),
-            ('border_width_r', ['border-r-']),
-            ('border_width_b', ['border-b-']),
-            ('border_width_l', ['border-l-']),
-            # Border Color
-            ('border_color', ['border-']),
+            # --- Border Width --- (Split sides)
+            ('border_width_all', ['border', 'border-0', 'border-2', 'border-4', 'border-8']), # General width first
+            ('border_width_t', ['border-t', 'border-t-0', 'border-t-2', 'border-t-4', 'border-t-8']),
+            ('border_width_r', ['border-r', 'border-r-0', 'border-r-2', 'border-r-4', 'border-r-8']),
+            ('border_width_b', ['border-b', 'border-b-0', 'border-b-2', 'border-b-4', 'border-b-8']),
+            ('border_width_l', ['border-l', 'border-l-0', 'border-l-2', 'border-l-4', 'border-l-8']),
+            # Tailwind also has border-x, border-y but let's keep it simpler for now or add if needed
+            # --- End Border Width ---
+
+            # Border Color (Needs care with opacity potentially)
+            ('border_color', ['border-']), # Keep general for now, might need split if opacity added (e.g., border-red-500 vs border-opacity-50)
             # Border Style
-            ('border_style', ['border-solid', 'border-dashed', 'border-dotted', 'border-double', 'border-none']),
-            # Border Radius
-            ('border_radius', ['rounded']),
-            ('border_radius_t', ['rounded-t']),
-            ('border_radius_r', ['rounded-r']),
-            ('border_radius_b', ['rounded-b']),
-            ('border_radius_l', ['rounded-l']),
-            ('border_radius_tl', ['rounded-tl']),
-            ('border_radius_tr', ['rounded-tr']),
-            ('border_radius_br', ['rounded-br']),
-            ('border_radius_bl', ['rounded-bl']),
+            ('border_style', ['border-solid', 'border-dashed', 'border-dotted', 'border-double', 'border-hidden', 'border-none']), # Added hidden
+            # Border Radius (Split corners/sides)
+            ('border_radius_tl', ['rounded-tl-']),
+            ('border_radius_tr', ['rounded-tr-']),
+            ('border_radius_br', ['rounded-br-']),
+            ('border_radius_bl', ['rounded-bl-']),
+            ('border_radius_t', ['rounded-t-']),
+            ('border_radius_r', ['rounded-r-']),
+            ('border_radius_b', ['rounded-b-']),
+            ('border_radius_l', ['rounded-l-']),
+            ('border_radius_all', ['rounded', 'rounded-']), # General 'rounded' and 'rounded-[size]'
 
             # Opacity
             ('opacity', ['opacity-']),
+             # Background Opacity (Conflicts with bg-color potentially, tricky) - Keep separate for now
+            ('bg_opacity', ['bg-opacity-']),
+             # Border Opacity
+            ('border_opacity', ['border-opacity-']),
+             # Text Opacity
+            ('text_opacity', ['text-opacity-']),
+
 
             # Box Shadow
-            ('shadow', ['shadow']),
+            ('shadow', ['shadow']), # shadow-sm, shadow, shadow-md etc.
 
             # Transition Property
-            ('transition', ['transition']),
+            ('transition', ['transition']), # transition-all, transition-colors, etc.
             # Transition Duration
             ('transition_duration', ['duration-']),
             # Transition Timing Function
@@ -179,10 +221,10 @@ class TailwindMerge:
             # Transition Delay
             ('transition_delay', ['delay-']),
 
-            # Transform
-            ('transform', ['transform', 'transform-gpu', 'transform-none']),
+            # Transform - Core enabling classes
+            ('transform_core', ['transform', 'transform-gpu', 'transform-none']),
             # Scale
-            ('scale', ['scale-']),
+            ('scale_all', ['scale-']),
             ('scale_x', ['scale-x-']),
             ('scale_y', ['scale-y-']),
             # Rotate
@@ -193,115 +235,194 @@ class TailwindMerge:
             # Skew
             ('skew_x', ['skew-x-']),
             ('skew_y', ['skew-y-']),
+            # Transform Origin
+            ('transform_origin', ['origin-']),
 
-            # Overflow
-            ('overflow', ['overflow-']),
-            ('overflow_x', ['overflow-x-']),
-            ('overflow_y', ['overflow-y-']),
+
+            # --- Overflow --- (Split axes)
+            ('overflow_all', ['overflow-auto', 'overflow-hidden', 'overflow-visible', 'overflow-scroll']),
+            ('overflow_x', ['overflow-x-auto', 'overflow-x-hidden', 'overflow-x-visible', 'overflow-x-scroll']),
+            ('overflow_y', ['overflow-y-auto', 'overflow-y-hidden', 'overflow-y-visible', 'overflow-y-scroll']),
+             # --- End Overflow ---
+
+            # Whitespace
+            ('whitespace', ['whitespace-normal', 'whitespace-nowrap', 'whitespace-pre', 'whitespace-pre-line', 'whitespace-pre-wrap']),
+            # Word Break
+            ('word_break', ['break-normal', 'break-words', 'break-all']),
+            # Text Overflow
+            ('text_overflow', ['truncate', 'overflow-ellipsis', 'text-ellipsis', 'overflow-clip', 'text-clip']), # Added aliases
+
+            # Appearance
+            ('appearance', ['appearance-none']),
+            # Cursor
+            ('cursor', ['cursor-']),
+            # Pointer Events
+            ('pointer_events', ['pointer-events-none', 'pointer-events-auto']),
+            # Resize
+            ('resize', ['resize-none', 'resize-y', 'resize-x', 'resize']),
+            # User Select
+            ('user_select', ['select-none', 'select-text', 'select-all', 'select-auto']),
         ]
 
         # Precomputed prefix mapping for performance
-        self._prefix_mapping = {}
-        self._exact_mapping = {}
+        self._prefix_mapping: Dict[str, str] = {}
+        self._exact_mapping: Dict[str, str] = {}
         self._initialize_mappings()
 
         # Regex pattern for dynamic arbitrary values
-        self._arbitrary_pattern = re.compile(r'([a-zA-Z-]+)\[([^\]]+)\]')
+        self._arbitrary_pattern = re.compile(r'^((?:[a-zA-Z0-9-]+(?:\[[^\]]+\])?:)*)?([a-zA-Z0-9-]+(?:-[a-zA-Z0-9]+)*)-\[([^\]]+)\]$')
 
     def _initialize_mappings(self):
         """Precompute mappings for better performance"""
-        for group_name, prefixes in self.groups:
-            # Handle exact matches
-            for prefix in prefixes:
-                if not prefix.endswith('-'):
-                    self._exact_mapping[prefix] = group_name
+        self._prefix_mapping = {}
+        self._exact_mapping = {}
+        for group_name, prefixes_or_exact in self.groups:
+            for class_or_prefix in prefixes_or_exact:
+                if class_or_prefix.endswith('-'):
+                    # It's a prefix
+                    self._prefix_mapping[class_or_prefix] = group_name
                 else:
-                    self._prefix_mapping[prefix] = group_name
+                    # It's an exact class name
+                    self._exact_mapping[class_or_prefix] = group_name
 
     def merge(self, *class_lists: str) -> str:
         """
         Merge Tailwind classes, resolving conflicts by keeping the last occurrence
-        in each group.
+        in each group. Handles modifiers like hover: etc.
         """
-        # Flatten and filter empty classes
+        # Flatten, split, and filter empty classes
         all_classes: List[str] = []
         for class_str in class_lists:
             if class_str:
-                all_classes.extend(class_str.split())
+                all_classes.extend(filter(None, class_str.split()))
 
         if not all_classes:
             return ""
 
-        # Track last occurrence of each group
+        # Track last occurrence index for each group *key* (group_name + modifiers)
         group_last_idx: Dict[str, int] = {}
-        class_to_group: Dict[str, str] = {}
+        # Store the resolved group key for each class index
+        class_to_group_key: Dict[int, str] = {}
 
-        # First pass: determine groups
+        # First pass: determine groups and modifiers
         for idx, class_name in enumerate(all_classes):
-            if not class_name:
-                continue
+            modifiers, base_class_name = self._extract_modifiers(class_name)
+            group = self._get_group(base_class_name)
 
-            group = self._get_group(class_name)
             if group:
-                group_last_idx[group] = idx
-                class_to_group[class_name] = group
+                # Group key includes modifiers to handle conflicts correctly
+                # e.g., 'hover:padding_left' vs 'padding_left'
+                group_key = f"{modifiers}:{group}"
+                group_last_idx[group_key] = idx
+                class_to_group_key[idx] = group_key
+            # else: class doesn't belong to a conflict group (or is only modifiers)
 
         # Second pass: collect final classes
-        result: Set[str] = set()  # Using a set to avoid duplicate processing
-        included_groups: Set[str] = set()
+        result_indices: Set[int] = set()
+        included_group_keys: Set[str] = set()
 
-        # Process in reverse order for better performance in conflict resolution
+        # Process in reverse order
         for idx in range(len(all_classes) - 1, -1, -1):
-            class_name = all_classes[idx]
-            if not class_name:
-                continue
+            group_key = class_to_group_key.get(idx)
 
-            group = class_to_group.get(class_name)
+            if group_key:
+                # It belongs to a conflict group
+                if group_key not in included_group_keys and idx == group_last_idx.get(group_key):
+                    # This is the last occurrence for this specific group+modifier combination
+                    result_indices.add(idx)
+                    included_group_keys.add(group_key)
+            elif idx not in class_to_group_key:
+                 # Class does not belong to any known conflict group (or has no base class name after modifiers)
+                 # Check if it has modifiers but no recognized base class - still potentially valid standalone modifier usage or custom class
+                 modifiers, base_class_name = self._extract_modifiers(all_classes[idx])
+                 if base_class_name or modifiers: # Include if it's a custom class or just modifiers
+                     # Need to avoid adding duplicates if a non-grouped class appears multiple times
+                     # Simple approach: check if the exact class string is already added via another index
+                     # This isn't perfect for preserving order strictly but avoids simple duplicates.
+                     is_duplicate = False
+                     for added_idx in result_indices:
+                         if all_classes[added_idx] == all_classes[idx]:
+                             is_duplicate = True
+                             break
+                     if not is_duplicate:
+                           result_indices.add(idx)
 
-            if not group:
-                # Not in any group, always include
-                result.add(class_name)
-            elif group not in included_groups and idx == group_last_idx.get(group, -1):
-                # This is the last occurrence of this group and we haven't included it yet
-                result.add(class_name)
-                included_groups.add(group)
 
-        # Preserve original order as much as possible
-        return ' '.join(cls for cls in all_classes if cls in result)
+        # Reconstruct the string preserving original order as much as possible
+        final_classes = [all_classes[i] for i in sorted(list(result_indices))]
 
-    def _get_group(self, class_name: str) -> Optional[str]:
+        return ' '.join(final_classes)
+
+    def _extract_modifiers(self, class_name: str) -> Tuple[str, str]:
+        """Splits class name into modifiers (e.g., 'hover:focus:') and the base class name."""
+        parts = class_name.split(':')
+        if len(parts) == 1:
+            return "", class_name  # No modifiers
+        base_class_name = parts[-1]
+        modifiers = ":".join(parts[:-1]) + ":"
+        return modifiers, base_class_name
+
+    def _get_group(self, base_class_name: str) -> Optional[str]:
         """
-        Find the group for a class name using precomputed mappings.
-        First checks exact matches, then prefix matches, then arbitrary values.
+        Find the group for a *base* class name (without modifiers).
+        Prioritizes exact matches, then arbitrary values, then the longest matching prefix.
         """
-        # Check exact matches (fastest)
-        if class_name in self._exact_mapping:
-            return self._exact_mapping[class_name]
+        if not base_class_name: # Handle cases like "hover:" which have no base class
+            return None
 
-        # Check for arbitrary value pattern (like p-[20px])
-        match = self._arbitrary_pattern.match(class_name)
-        if match:
-            base_class = match.group(1) + '-'
-            if base_class in self._prefix_mapping:
-                return self._prefix_mapping[base_class]
+        # 1. Check exact matches
+        if base_class_name in self._exact_mapping:
+            return self._exact_mapping[base_class_name]
 
-        # Check prefix matches
+        # 2. Check for arbitrary value pattern (e.g., p-[20px])
+        # Use a simpler regex here as modifiers are already stripped
+        arbitrary_match = re.match(r'([a-zA-Z0-9-]+(?:-[a-zA-Z0-9]+)*)-\[([^\]]+)\]$', base_class_name)
+        arbitrary_base_prefix = None
+        if arbitrary_match:
+            arbitrary_base_prefix = arbitrary_match.group(1) + '-' # e.g., 'p-', 'border-t-'
+
+        # 3. Check prefix matches - Find the *longest* matching prefix
+        best_match_len = 0
+        found_group = None
+
+        # Check against the actual class name OR the base prefix from arbitrary value
+        check_name = arbitrary_base_prefix if arbitrary_base_prefix else base_class_name
+
         for prefix, group in self._prefix_mapping.items():
-            if class_name.startswith(prefix):
-                return group
+            # Use startswith for flexibility (e.g., 'p-' matches 'p-4' and 'p-[20px]' base 'p-')
+            if check_name.startswith(prefix):
+                if len(prefix) > best_match_len:
+                    best_match_len = len(prefix)
+                    found_group = group
 
+        # If we matched an arbitrary value's base prefix, return that group
+        # Otherwise, return the group found matching the regular class name (if any)
+        if arbitrary_base_prefix and found_group:
+             return found_group
+        elif not arbitrary_base_prefix and found_group:
+             return found_group
+
+        # 4. No group found
         return None
 
-    def add_rule(self, category: str, prefixes: List[str]) -> None:
-        """
-        Add new conflict rule with highest priority.
-        Inserts at beginning of groups list for precedence.
-        """
-        self.groups.insert(0, (category, prefixes))
 
-        # Update mappings
-        for prefix in prefixes:
-            if not prefix.endswith('-'):
-                self._exact_mapping[prefix] = category
+    def add_rule(self, category: str, classes_or_prefixes: List[str]) -> None:
+        """
+        Add a new conflict rule. It will have high precedence for lookups
+        if its prefixes are longer or specific, due to the longest-match logic.
+        """
+        # Add to the internal groups list (less critical now with sorted lookup)
+        self.groups.append((category, classes_or_prefixes)) # Append is fine
+
+        # Update mappings immediately
+        for item in classes_or_prefixes:
+            if item.endswith('-'):
+                # Check if prefix already exists and warn or decide overwrite policy
+                # if item in self._prefix_mapping and self._prefix_mapping[item] != category:
+                #     print(f"Warning: Overwriting prefix '{item}' group '{self._prefix_mapping[item]}' with '{category}'")
+                self._prefix_mapping[item] = category
             else:
-                self._prefix_mapping[prefix] = category
+                # Check if exact match already exists
+                # if item in self._exact_mapping and self._exact_mapping[item] != category:
+                #     print(f"Warning: Overwriting exact match '{item}' group '{self._exact_mapping[item]}' with '{category}'")
+                self._exact_mapping[item] = category
