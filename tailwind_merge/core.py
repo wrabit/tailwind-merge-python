@@ -181,7 +181,6 @@ class TailwindMerge:
             ('border_width_r', ['border-r', 'border-r-0', 'border-r-2', 'border-r-4', 'border-r-8']),
             ('border_width_b', ['border-b', 'border-b-0', 'border-b-2', 'border-b-4', 'border-b-8']),
             ('border_width_l', ['border-l', 'border-l-0', 'border-l-2', 'border-l-4', 'border-l-8']),
-            # Tailwind also has border-x, border-y but let's keep it simpler for now or add if needed
             # --- End Border Width ---
 
             # Border Color (Needs care with opacity potentially)
