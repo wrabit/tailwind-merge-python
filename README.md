@@ -22,55 +22,37 @@ from tailwind_merge import TailwindMerge
 # Initialize 
 twm = TailwindMerge()
 
-# --- Basic Merging ---
-# Conflicting classes for the same property (width, text color) are resolved, keeping the last one.
 result = twm.merge(
     "p-4 w-6 text-blue-500", # Initial classes
     "w-8 text-red-500"       # Overrides for width and text color
 )
-print(result)
-# Output: "p-4 text-red-500 w-8" (Order might vary slightly based on processing, but content is correct)
+# "p-4 text-red-500 w-8" 
 
-# --- Handling Specific Sides/Axes ---
-# Padding/Margin sides don't conflict with each other, but conflict with axis/all setters.
-result = twm.merge("pl-4 pr-6") # Left and Right padding coexist
-print(result)
-# Output: "pl-4 pr-6"
+result = twm.merge("pl-4", "pr-6 pl-2") 
+# "pl-2 pr-6"
 
-# --- Modifier Handling ---
-# Modifiers (hover:, focus:, md:, etc.) are handled correctly.
-# Conflicts are resolved independently for base classes and each modifier combination.
-result = twm.merge("p-2 hover:p-4", "p-3") # Base padding is overridden
-print(result)
-# Output: "hover:p-4 p-3"
+result = twm.merge("p-2 hover:p-4", "p-3") 
+# "hover:p-4 p-3"
 
-result = twm.merge("hover:p-2 hover:p-4", "focus:p-1") # Hover conflict resolved, focus added
-print(result)
-# Output: "hover:p-4 focus:p-1"
+result = twm.merge("hover:p-2", "focus:p-1 hover:p-4") 
+# "hover:p-4 focus:p-1"
 
-# --- Arbitrary Value Support ---
-# Classes with arbitrary values are correctly grouped and merged.
 result = twm.merge("p-1", "p-[2px]")
-print(result)
-# Output: "p-[2px]"
+# "p-[2px]"
 
-# --- Combining Multiple Strings ---
-# Pass multiple strings as arguments
 result = twm.merge(
     "flex items-center justify-center", # Base layout
     "justify-between",                  # Override justify
     "text-red-500",                     # Add text color
     "hover:text-blue-500 text-lg"       # Add hover color and text size
 )
-print(result)
-# Output: "flex items-center justify-between text-red-500 hover:text-blue-500 text-lg"
-
-
-# --- Extensibility ---
-# Add your own custom class groups if needed
-# twm.add_rule('custom-icon-size', ['icon-sm', 'icon-md', 'icon-lg'])
-# result = twm.merge("icon-sm icon-lg")
-# print(result) # Output: "icon-lg"
+# "flex items-center justify-between text-red-500 hover:text-blue-500 text-lg"
+```
+### Custom Rules
+```python
+twm.add_rule('custom-icon-size', ['icon-sm', 'icon-md', 'icon-lg'])
+twm.merge("icon-sm icon-lg")
+# "icon-lg"
 ```
 
 ## Features
