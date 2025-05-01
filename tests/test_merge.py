@@ -59,3 +59,35 @@ def test_no_conflict_similar():
         "grid-cols-4 grid-rows-2"
     )
     assert result == "grid grid-cols-4 grid-rows-2"
+
+def test_padding_sub_groups():
+    twmerge = TailwindMerge()
+    result = twmerge.merge(
+        "p-4 pt-2 pb-3 px-3",
+        "pt-1 pb-4 px-2"
+    )
+    assert result == "p-4 pt-1 pb-4 px-2"
+
+def test_margin_sub_groups():
+    twmerge = TailwindMerge()
+    result = twmerge.merge(
+        "m-4 mt-2 mb-3 mx-3",
+        "mt-1 mb-4 mx-2"
+    )
+    assert result == "m-4 mt-1 mb-4 mx-2"
+
+def test_conflicting_stubs():
+    twmerge = TailwindMerge()
+    result = twmerge.merge(
+        "text-xl text-red-500 text-left",
+        "text-sm text-blue-500 text-center"
+    )
+    assert result == "text-sm text-blue-500 text-center"
+
+def test_with_modifiers():
+    twmerge = TailwindMerge()
+    result = twmerge.merge(
+        "hover:text-red-500",
+        "hover:text-green-500"
+    )
+    assert result == "hover:text-green-500"
