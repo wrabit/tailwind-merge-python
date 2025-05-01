@@ -11,17 +11,15 @@ This utility ensures that when you combine multiple strings of Tailwind classes 
 
 Using pip:
 ```bash
-pip install tailwind-merge # Assuming this is the package name you'll use
-# Or if installing directly from source:
-# pip install .
+pip install tailwind-merge 
 ```
 
 ## Usage
 
 ```python
-from tailwind_merge import TailwindMerge # Adjust import if your file/package name differs
+from tailwind_merge import TailwindMerge 
 
-# Initialize the merger (you can reuse the instance)
+# Initialize 
 twm = TailwindMerge()
 
 # --- Basic Merging ---
@@ -39,14 +37,6 @@ result = twm.merge("pl-4 pr-6") # Left and Right padding coexist
 print(result)
 # Output: "pl-4 pr-6"
 
-result = twm.merge("p-4 pl-8") # Specific left padding overrides general padding affecting left
-print(result)
-# Output: "pl-8" # Or potentially "p-4 pl-8" depending on exact conflict rules for p-* vs pl-*
-
-result = twm.merge("pl-8 p-4") # General padding defined later overrides specific padding
-print(result)
-# Output: "p-4"
-
 # --- Modifier Handling ---
 # Modifiers (hover:, focus:, md:, etc.) are handled correctly.
 # Conflicts are resolved independently for base classes and each modifier combination.
@@ -60,13 +50,9 @@ print(result)
 
 # --- Arbitrary Value Support ---
 # Classes with arbitrary values are correctly grouped and merged.
-result = twm.merge("p-[2px] p-1")
+result = twm.merge("p-1", "p-[2px]")
 print(result)
-# Output: "p-1"
-
-result = twm.merge("m-1 m-[3vh]")
-print(result)
-# Output: "m-[3vh]"
+# Output: "p-[2px]"
 
 # --- Combining Multiple Strings ---
 # Pass multiple strings as arguments
