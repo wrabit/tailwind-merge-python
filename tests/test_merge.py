@@ -91,3 +91,30 @@ def test_with_modifiers():
         "hover:text-green-500"
     )
     assert result == "hover:text-green-500"
+
+def test_placeholder_merge():
+    """Test that placeholder colors merge correctly"""
+    twmerge = TailwindMerge()
+    result = twmerge.merge(
+        "placeholder-gray-400",
+        "placeholder-red-500"
+    )
+    assert result == "placeholder-red-500"
+
+def test_dark_placeholder_merge():
+    """Test that dark:placeholder-* variants merge correctly - Issue #6"""
+    twmerge = TailwindMerge()
+    result = twmerge.merge(
+        "dark:placeholder-gray-400",
+        "dark:placeholder-red-500"
+    )
+    assert result == "dark:placeholder-red-500"
+
+def test_multiple_modifier_placeholder_merge():
+    """Test placeholder with multiple modifiers"""
+    twmerge = TailwindMerge()
+    result = twmerge.merge(
+        "hover:dark:placeholder-gray-400",
+        "hover:dark:placeholder-red-500"
+    )
+    assert result == "hover:dark:placeholder-red-500"
