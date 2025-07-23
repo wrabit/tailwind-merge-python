@@ -4,7 +4,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "tailwind-merge"
-version = "0.3.2"
+version = "0.3.3"
 description = "Merge Tailwind CSS classes without conflicts in python."
 authors = [ "Will Abbott <willabb83@gmail.com>",]
 license = "MIT"
