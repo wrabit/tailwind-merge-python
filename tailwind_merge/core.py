@@ -206,6 +206,8 @@ class TailwindMerge:
             ('border_opacity', ['border-opacity-']),
              # Text Opacity
             ('text_opacity', ['text-opacity-']),
+             # Placeholder Color
+            ('placeholder_color', ['placeholder-']),
 
 
             # Box Shadow
